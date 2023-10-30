@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AudioComponent } from './componets/audio/audio.component';
 
 const routes: Routes = [
-  {path: '', component: AudioComponent}
+  {path: 'audio/:folder', component: AudioComponent}
 ];
 
 @NgModule({

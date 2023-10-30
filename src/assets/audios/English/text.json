@@ -1,0 +1,15 @@
+{
+    "image":"algo_english.png",
+    "title": "Mi text in english",
+    "texts":[
+       {
+          "position":1,
+          "text":"123 123-123"
+       },
+       {
+          "position":2,
+          "text":"321 321-321"
+       }
+    ],
+    "Autor": null
+ }

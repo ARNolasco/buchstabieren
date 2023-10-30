@@ -1,4 +1,7 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+
 
 
 @Component({
@@ -7,11 +10,32 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
   styleUrls: ['./audio.component.scss']
 })
 export class AudioComponent {
-  count = 1;
+  track = 1;
+  folder = "";
+  json: any;
   @ViewChild('miAudio', { static: true }) miAudio: ElementRef;
 
-  constructor() {
+  constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient) {
     this.miAudio = new ElementRef(null); 
+  }
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      if(params['track'])
+      {
+        this.track = params['track']
+      }
+    });
+
+    this.route.params.subscribe(params => {
+      this.folder = params['folder'];
+      this.miAudio.nativeElement.src = '../assets/audios/'+this.folder+'/Audio_'+this.track+'.mp3';
+      this.miAudio.nativeElement.load();
+    });
+
+    this.http.get('../assets/audios/'+this.folder+'/text.json', { responseType: 'text' }).subscribe(data => {
+      this.json = JSON.parse(data);
+    });
   }
 
   reproducirAudio() {
@@ -23,13 +47,10 @@ export class AudioComponent {
   }
 
   audioTerminado() {
-    this.count++;
-    // Aquí puedes realizar acciones específicas cuando el audio ha terminado.
-    console.log("El audio ha terminado de reproducirse.");
-    // Puedes, por ejemplo, reiniciar la reproducción o realizar otra acción.
+    this.track++;
 
-    if(this.count <= 2){
-      this.miAudio.nativeElement.src = '../assets/audios/Test_'+this.count+'.mp3';
+    if(this.track <= 2){
+      this.miAudio.nativeElement.src = '../assets/audios/'+this.folder+'/Audio_'+this.track+'.mp3';
       this.miAudio.nativeElement.load();
       this.miAudio.nativeElement.play();
     }
