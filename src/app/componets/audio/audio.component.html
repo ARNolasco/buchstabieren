@@ -1,0 +1,9 @@
+<audio #miAudio (ended)="audioTerminado()">
+    <source src="../assets/audios/Test_{{count}}.mp3" type="audio/mpeg">
+    Tu navegador no soporta la reproducción de audio.
+</audio>
+<button (click)="reproducirAudio()">Reproducir</button>
+<button (click)="pausarAudio()">Pausar</button>
+<button (click)="aumentarVelocidad()">Aumentar Velocidad</button>
+<button (click)="disminuirVelocidad()">Disminuir Velocidad</button>
+  
