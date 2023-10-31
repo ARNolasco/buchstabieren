@@ -1,14 +1,27 @@
-<audio #miAudio (ended)="audioTerminado()">
-    <source src="" type="audio/mpeg">
-    Tu navegador no soporta la reproducción de audio.
-</audio>
-<button (click)="reproducirAudio()">Reproducir</button>
-<button (click)="pausarAudio()">Pausar</button>
-<button (click)="aumentarVelocidad()">Aumentar Velocidad</button>
-<button (click)="disminuirVelocidad()">Disminuir Velocidad</button>
-  
-<div>
-    <div *ngFor="let textItem of json.texts">
-        <span>{{ textItem.text }}</span>
-      </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-12">
+                    <audio #Audio (ended)="audioTerminado()">
+                        <source src="" type="audio/mpeg">
+                        Tu navegador no soporta la reproducción de audio.
+                    </audio>
+                    <button (click)="toggleAudio()" #toggleButton class="btn btn-primary"><i class="bi bi-test"></i>Play</button>
+                    <button (click)="aumentarVelocidad()" class="btn btn-primary">Aumentar Velocidad</button>
+                    <button (click)="disminuirVelocidad()" class="btn btn-primary">Disminuir Velocidad</button>
+                </div>
+                <div class="col-md-12" (mouseup)="getSelectedText($event)">
+                    <div *ngFor="let item of textsArray">
+                        <span (click)="jumpTrack(item['position'])">{{ item["text"] }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <p>
+                holas
+            </p>
+        </div>
+    </div>
 </div>

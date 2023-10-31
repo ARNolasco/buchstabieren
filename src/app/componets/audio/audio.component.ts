@@ -10,13 +10,18 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./audio.component.scss']
 })
 export class AudioComponent {
+  status = 1;
   track = 1;
   folder = "";
+  text = "";
   json: any;
-  @ViewChild('miAudio', { static: true }) miAudio: ElementRef;
+  textsArray: Array<any> = [];
+  @ViewChild('Audio', { static: true }) miAudio: ElementRef;
+  @ViewChild('toggleButton', { static: true }) toggleButton: ElementRef;
 
   constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient) {
     this.miAudio = new ElementRef(null); 
+    this.toggleButton = new ElementRef(null);
   }
 
   ngOnInit(): void {
@@ -29,28 +34,51 @@ export class AudioComponent {
 
     this.route.params.subscribe(params => {
       this.folder = params['folder'];
-      this.miAudio.nativeElement.src = '../assets/audios/'+this.folder+'/Audio_'+this.track+'.mp3';
+      this.text = params['text'];
+      this.miAudio.nativeElement.src = '../assets/audios/'+this.folder+'/'+this.text+'/Audio_'+this.track+'.mp3';
       this.miAudio.nativeElement.load();
     });
 
-    this.http.get('../assets/audios/'+this.folder+'/text.json', { responseType: 'text' }).subscribe(data => {
+    this.http.get('../assets/audios/'+this.folder+'/'+this.text+'/text.json', { responseType: 'text' }).subscribe(data => {
       this.json = JSON.parse(data);
+      this.textsArray = this.json.texts;
+      console.log(this.textsArray)
     });
   }
 
-  reproducirAudio() {
-    this.miAudio.nativeElement.play();
+  toggleAudio(){
+    if(this.status == 1){
+      this.toggleButton.nativeElement.textContent = "Stop"
+      this.status = 2;
+      this.miAudio.nativeElement.play();
+    } else {
+      this.toggleButton.nativeElement.textContent = "Play"
+      this.status = 1;
+      this.miAudio.nativeElement.pause();
+    }
   }
 
-  pausarAudio() {
-    this.miAudio.nativeElement.pause();
+  jumpTrack(track: any){
+    this.miAudio.nativeElement.src = '../assets/audios/'+this.folder+'/'+this.text+'/Audio_'+track+'.mp3';
+      this.miAudio.nativeElement.load();
+      this.toggleAudio()
   }
+
+  //TODO replace with toggle function 
+  // reproducirAudio() {
+  //   this.miAudio.nativeElement.play();
+  // }
+
+  //TODO replace with toggle function 
+  // pausarAudio() {
+  //   this.miAudio.nativeElement.pause();
+  // }
 
   audioTerminado() {
     this.track++;
 
     if(this.track <= 2){
-      this.miAudio.nativeElement.src = '../assets/audios/'+this.folder+'/Audio_'+this.track+'.mp3';
+      this.miAudio.nativeElement.src = '../assets/audios/'+this.folder+'/'+this.text+'/Audio_'+this.track+'.mp3';
       this.miAudio.nativeElement.load();
       this.miAudio.nativeElement.play();
     }
@@ -62,5 +90,13 @@ export class AudioComponent {
 
   disminuirVelocidad() {
     this.miAudio.nativeElement.playbackRate = 0.5; // Disminuye la velocidad en 0.1
+  }
+
+  getSelectedText(event: any) {
+    const selectedText = window.getSelection()?.toString();
+    if (selectedText) {
+      console.log("Texto seleccionado:", selectedText);
+      // Aquí puedes hacer lo que necesites con el texto seleccionado
+    }
   }
 }
