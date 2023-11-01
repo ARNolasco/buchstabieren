@@ -1,14 +1,15 @@
 {
     "image":"algo_german.png",
     "title": "Mi text in german",
+    "tracks": 2, 
     "texts":[
        {
           "position":1,
-          "text":"123 123-123"
+          "text":"Unsere Reise begann mit einem Langstreckenflug,  bei dem wir den Atlantik überquerten und schließlich in Rio de Janeiro landeten.  Schon bei der Ankunft spürten wir die lebendige Energie der Stadt.  Die Straßen waren geschmückt,  und die Menschen bereiteten sich auf die großen Paraden und Feiern vor."
        },
        {
           "position":2,
-          "text":"321 321-321"
+          "text":" Im Februar machten wir uns auf den Weg zu einem aufregenden Abenteuer: dem Karneval in Rio de Janeiro,  Brasilien.  Die Vorfreude war riesig,  da wir wussten,  dass der Karneval in Rio als einer der spektakulärsten der Welt gilt."
        }
     ],
     "Autor": null

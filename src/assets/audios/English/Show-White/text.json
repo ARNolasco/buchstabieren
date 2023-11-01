@@ -1,15 +1,24 @@
 {
     "image":"algo_english.png",
     "title": "Mi text in english",
+    "tracks": 3, 
     "texts":[
        {
           "position":1,
-          "text":"123 123-123"
+          "text":"The Queen,  Snow White’s stepmother,  knew how much this meant to her husband.  At the first chance,  she rushed to her magic mirror.   “Mirror,  mirror,  on the wall, ” said the Queen.   “Who is the fairest of them all? ”"
        },
        {
           "position":2,
-          "text":"321 321-321"
-       }
+          "text":"Once upon a time,  a princess named Snow White lived in a castle with her father,  the King,  and her stepmother,  the Queen.  Her father had always said to his daughter that she must be fair to everyone at court.  Said he: “People come here to the castle when they have a problem.  They need the ruler to make a fair decision.  Nothing is more important than to be fair. ”"
+       },
+       {
+         "position":-1,
+         "text":"Space"
+      },
+      {
+         "position":3,
+         "text":"Once upon a time,  a princess named Snow White lived in a castle with her father,  the King,  and her stepmother,  the Queen.  Her father had always said to his daughter that she must be fair to everyone at court.  Said he: “People come here to the castle when they have a problem.  They need the ruler to make a fair decision.  Nothing is more important than to be fair. ”"
+      }
     ],
     "Autor": null
  }

@@ -15,13 +15,17 @@ export class AudioComponent {
   folder = "";
   text = "";
   json: any;
+  selected: string = "";
   textsArray: Array<any> = [];
   @ViewChild('Audio', { static: true }) miAudio: ElementRef;
   @ViewChild('toggleButton', { static: true }) toggleButton: ElementRef;
+  @ViewChild('myText') myText: ElementRef;
 
-  constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient) {
+  constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient,
+    private el: ElementRef) {
     this.miAudio = new ElementRef(null); 
     this.toggleButton = new ElementRef(null);
+    this.myText = new ElementRef(null);
   }
 
   ngOnInit(): void {
@@ -38,11 +42,11 @@ export class AudioComponent {
       this.miAudio.nativeElement.src = '../assets/audios/'+this.folder+'/'+this.text+'/Audio_'+this.track+'.mp3';
       this.miAudio.nativeElement.load();
     });
+    console.log(this.track)
 
     this.http.get('../assets/audios/'+this.folder+'/'+this.text+'/text.json', { responseType: 'text' }).subscribe(data => {
       this.json = JSON.parse(data);
       this.textsArray = this.json.texts;
-      console.log(this.textsArray)
     });
   }
 
@@ -51,10 +55,12 @@ export class AudioComponent {
       this.toggleButton.nativeElement.textContent = "Stop"
       this.status = 2;
       this.miAudio.nativeElement.play();
+      this.resaltText();
     } else {
       this.toggleButton.nativeElement.textContent = "Play"
       this.status = 1;
       this.miAudio.nativeElement.pause();
+      this.resaltText();
     }
   }
 
@@ -76,11 +82,15 @@ export class AudioComponent {
 
   audioTerminado() {
     this.track++;
+    this.resaltText();
 
-    if(this.track <= 2){
+    if(this.track <= this.json["tracks"]){
       this.miAudio.nativeElement.src = '../assets/audios/'+this.folder+'/'+this.text+'/Audio_'+this.track+'.mp3';
       this.miAudio.nativeElement.load();
       this.miAudio.nativeElement.play();
+      console.log("next")
+    } else {
+      console.log("error")
     }
   }
 
@@ -96,7 +106,20 @@ export class AudioComponent {
     const selectedText = window.getSelection()?.toString();
     if (selectedText) {
       console.log("Texto seleccionado:", selectedText);
+      this.selected = selectedText;
       // Aquí puedes hacer lo que necesites con el texto seleccionado
+    }
+  }
+
+  resaltText(){
+    const elementos = this.myText.nativeElement.querySelectorAll('span');
+    elementos.forEach((elemento: HTMLElement) => {
+      elemento.classList.remove('resaltText');
+    });
+
+    const elemento = this.el.nativeElement.querySelector('#track-'+this.track);
+    if (elemento) {
+      elemento.classList.add('resaltText');
     }
   }
 }
