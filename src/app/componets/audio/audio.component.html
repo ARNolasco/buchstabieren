@@ -2,26 +2,56 @@
     <div class="row">
         <div class="col-md-8">
             <div class="row">
+                <div class="col-md-12">
+                    <img [src]="imagenUrl" alt="Mi Imagen" class="img-fluid">
+                </div>
                 <div class="col-md-12 text-center">
                     <audio #Audio (ended)="audioTerminado()">
                         <source src="" type="audio/mpeg">
                         Tu navegador no soporta la reproducción de audio.
                     </audio>     
-                    <button class="btn btn-secondary">previews</button>               
+                    <button class="btn btn-secondary prevNextButton" (click)="previewTrack()">prev</button>               
                     <button (click)="toggleAudio()" #toggleButton id="toggleButton" class="btn btn-primary"><i class="bi bi-test"></i>Play</button>
-                    <button class="btn btn-secondary">next</button> 
+                    <button class="btn btn-secondary prevNextButton" (click)="nextTrack()">next</button> 
                 </div>
                 <div class="col-md-12 text-center">
                     <audio #Audio (ended)="audioTerminado()">
                         <source src="" type="audio/mpeg">
                         Tu navegador no soporta la reproducción de audio.
                     </audio>                    
-                    <button (click)="aumentarVelocidad()" class="btn btn-primary">Aumentar Velocidad</button>
-                    <button (click)="disminuirVelocidad()" class="btn btn-primary">Disminuir Velocidad</button>
+                    <!-- <button (click)="aumentarVelocidad()" class="btn btn-primary">Aumentar Velocidad</button>
+                    <button (click)="disminuirVelocidad()" class="btn btn-primary">Disminuir Velocidad</button> -->
                 </div>
-                <div class="col-md-12" (mouseup)="getSelectedText($event)" #myText>
+                <div class="col-md-12 text-center">
+                    <div class="toggleInput">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" (change)="speedText($event)">
+                            <label class="form-check-label" for="flexSwitchCheckChecked">Slow speed</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 text-center">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="continue" checked (change)="sequenceAudio($event)">
+                        <label class="form-check-label" for="inlineRadio1">Continue</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="repeat" (change)="sequenceAudio($event)">
+                        <label class="form-check-label" for="inlineRadio2">Repeat</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="stop" (change)="sequenceAudio($event)">
+                        <label class="form-check-label" for="inlineRadio3">Stop</label>
+                      </div>
+                </div>
+                <div class="col-md-12">
+                    <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Show text
+                    </button>
+                </div>
+                <div class="col-md-12 collapse" #myText id="collapseExample">
                     <div *ngFor="let item of textsArray" class="d-inline text">
-                        <span (click)="jumpTrack(item['position'])" *ngIf="item.text != 'Space'; else noCumpleCondicion" id="track-{{item.position}}">{{ item["text"] }}</span>
+                        <span (click)="jumpTrack(item['position'], $event)" *ngIf="item.text != 'Space'; else noCumpleCondicion" id="track-{{item.position}}">{{ item["text"] }}</span>
                         <ng-template #noCumpleCondicion><br><br></ng-template>
                     </div>
                 </div>

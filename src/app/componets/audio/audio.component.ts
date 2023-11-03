@@ -17,6 +17,9 @@ export class AudioComponent {
   json: any;
   selected: string = "";
   textsArray: Array<any> = [];
+  tiempoUltimoClic = 0;
+  imagenUrl: string = '';
+  sequence: string = '';
   @ViewChild('Audio', { static: true }) miAudio: ElementRef;
   @ViewChild('toggleButton', { static: true }) toggleButton: ElementRef;
   @ViewChild('myText') myText: ElementRef;
@@ -47,6 +50,7 @@ export class AudioComponent {
     this.http.get('../assets/audios/'+this.folder+'/'+this.text+'/text.json', { responseType: 'text' }).subscribe(data => {
       this.json = JSON.parse(data);
       this.textsArray = this.json.texts;
+      this.imagenUrl = this.json.image;
     });
   }
 
@@ -64,21 +68,47 @@ export class AudioComponent {
     }
   }
 
-  jumpTrack(track: any){
-    this.miAudio.nativeElement.src = '../assets/audios/'+this.folder+'/'+this.text+'/Audio_'+track+'.mp3';
+  jumpTrack(track: any, event:any){
+    const tiempoActual = new Date().getTime();
+    if (tiempoActual - this.tiempoUltimoClic < 300) {
+      this.getSelectedText(event);
+    } else {
+      this.miAudio.nativeElement.src = '../assets/audios/'+this.folder+'/'+this.text+'/Audio_'+track+'.mp3';
       this.miAudio.nativeElement.load();
       this.toggleAudio()
+      this.tiempoUltimoClic = tiempoActual;
+    }
+    
   }
 
-  //TODO replace with toggle function 
-  // reproducirAudio() {
-  //   this.miAudio.nativeElement.play();
-  // }
+  previewTrack(){
+    this.track--;
+    if(this.track < 0)
+    {
+      this.track = 0;
+    }
+      
+    this.resaltText();
+    this.miAudio.nativeElement.src = '../assets/audios/'+this.folder+'/'+this.text+'/Audio_'+this.track+'.mp3';
+    this.miAudio.nativeElement.load();
+    this.miAudio.nativeElement.play();
+  }
 
-  //TODO replace with toggle function 
-  // pausarAudio() {
-  //   this.miAudio.nativeElement.pause();
-  // }
+  nextTrack()
+  {
+    this.track++;
+    if(this.track > this.json["tracks"])
+    {
+      this.track = this.json["tracks"] + 1;
+    }
+      
+    this.resaltText();
+    this.miAudio.nativeElement.src = '../assets/audios/'+this.folder+'/'+this.text+'/Audio_'+this.track+'.mp3';
+    this.miAudio.nativeElement.load();
+    this.miAudio.nativeElement.play();
+  }
+
+
 
   audioTerminado() {
     this.track++;
@@ -94,12 +124,19 @@ export class AudioComponent {
     }
   }
 
-  aumentarVelocidad() {
-    this.miAudio.nativeElement.playbackRate = 1; // Aumenta la velocidad en 0.1
+  sequenceAudio(event: any) {
+    if (event.target.checked) {
+      console.log('Se seleccionó la opción: ' + event.target.value);
+      this.sequence = event.target.value
+    }
   }
 
-  disminuirVelocidad() {
-    this.miAudio.nativeElement.playbackRate = 0.5; // Disminuye la velocidad en 0.1
+  speedText(event:any){
+    console.log(event.target.checked)
+    if(event.target.checked)
+      this.miAudio.nativeElement.playbackRate = 0.5;
+    else
+      this.miAudio.nativeElement.playbackRate = 1;
   }
 
   getSelectedText(event: any) {
@@ -112,6 +149,7 @@ export class AudioComponent {
   }
 
   resaltText(){
+    console.log("double click")
     const elementos = this.myText.nativeElement.querySelectorAll('span');
     elementos.forEach((elemento: HTMLElement) => {
       elemento.classList.remove('resaltText');
