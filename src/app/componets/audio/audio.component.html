@@ -6,21 +6,13 @@
                     <img [src]="imagenUrl" alt="Mi Imagen" class="img-fluid">
                 </div>
                 <div class="col-md-12 text-center">
-                    <audio #Audio (ended)="audioTerminado()">
+                    <audio #Audio (ended)="audioEnded()">
                         <source src="" type="audio/mpeg">
                         Tu navegador no soporta la reproducción de audio.
                     </audio>     
                     <button class="btn btn-secondary prevNextButton" (click)="previewTrack()">prev</button>               
                     <button (click)="toggleAudio()" #toggleButton id="toggleButton" class="btn btn-primary"><i class="bi bi-test"></i>Play</button>
                     <button class="btn btn-secondary prevNextButton" (click)="nextTrack()">next</button> 
-                </div>
-                <div class="col-md-12 text-center">
-                    <audio #Audio (ended)="audioTerminado()">
-                        <source src="" type="audio/mpeg">
-                        Tu navegador no soporta la reproducción de audio.
-                    </audio>                    
-                    <!-- <button (click)="aumentarVelocidad()" class="btn btn-primary">Aumentar Velocidad</button>
-                    <button (click)="disminuirVelocidad()" class="btn btn-primary">Disminuir Velocidad</button> -->
                 </div>
                 <div class="col-md-12 text-center">
                     <div class="toggleInput">
@@ -45,7 +37,7 @@
                       </div>
                 </div>
                 <div class="col-md-12">
-                    <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" [textContent]="textoDelBoton" (click)="updateCollapse()">
                         Show text
                     </button>
                 </div>

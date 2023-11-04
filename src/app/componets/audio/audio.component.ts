@@ -19,7 +19,8 @@ export class AudioComponent {
   textsArray: Array<any> = [];
   tiempoUltimoClic = 0;
   imagenUrl: string = '';
-  sequence: string = '';
+  sequence: string = 'continue';
+  textoDelBoton: string = 'Show Text';
   @ViewChild('Audio', { static: true }) miAudio: ElementRef;
   @ViewChild('toggleButton', { static: true }) toggleButton: ElementRef;
   @ViewChild('myText') myText: ElementRef;
@@ -91,7 +92,9 @@ export class AudioComponent {
     this.resaltText();
     this.miAudio.nativeElement.src = '../assets/audios/'+this.folder+'/'+this.text+'/Audio_'+this.track+'.mp3';
     this.miAudio.nativeElement.load();
-    this.miAudio.nativeElement.play();
+    if(this.checkSpeed())
+    this.miAudio.nativeElement.playbackRate = 0.5;
+    this.toggleAudio();
   }
 
   nextTrack()
@@ -105,23 +108,39 @@ export class AudioComponent {
     this.resaltText();
     this.miAudio.nativeElement.src = '../assets/audios/'+this.folder+'/'+this.text+'/Audio_'+this.track+'.mp3';
     this.miAudio.nativeElement.load();
-    this.miAudio.nativeElement.play();
+    if(this.checkSpeed())
+    this.miAudio.nativeElement.playbackRate = 0.5;
+    this.toggleAudio();
   }
 
 
 
-  audioTerminado() {
-    this.track++;
-    this.resaltText();
+  audioEnded() {
+    if(this.sequence == "continue")
+    {
+      this.track++;
+      this.resaltText();
 
-    if(this.track <= this.json["tracks"]){
-      this.miAudio.nativeElement.src = '../assets/audios/'+this.folder+'/'+this.text+'/Audio_'+this.track+'.mp3';
-      this.miAudio.nativeElement.load();
-      this.miAudio.nativeElement.play();
-      console.log("next")
-    } else {
-      console.log("error")
+      if(this.track <= this.json["tracks"]){
+        this.miAudio.nativeElement.src = '../assets/audios/'+this.folder+'/'+this.text+'/Audio_'+this.track+'.mp3';
+        this.miAudio.nativeElement.load();
+        this.miAudio.nativeElement.play();
+        console.log("next")
+      } else {
+        console.log("error")
+      }
     }
+
+    if(this.sequence == "repeat")
+    {
+      this.miAudio.nativeElement.play();
+    }
+
+    if(this.sequence == "stop")
+    {
+      this.toggleAudio()
+    }
+    
   }
 
   sequenceAudio(event: any) {
@@ -132,7 +151,6 @@ export class AudioComponent {
   }
 
   speedText(event:any){
-    console.log(event.target.checked)
     if(event.target.checked)
       this.miAudio.nativeElement.playbackRate = 0.5;
     else
@@ -149,7 +167,6 @@ export class AudioComponent {
   }
 
   resaltText(){
-    console.log("double click")
     const elementos = this.myText.nativeElement.querySelectorAll('span');
     elementos.forEach((elemento: HTMLElement) => {
       elemento.classList.remove('resaltText');
@@ -159,5 +176,14 @@ export class AudioComponent {
     if (elemento) {
       elemento.classList.add('resaltText');
     }
+  }
+
+  checkSpeed(){
+    const elemento = this.el.nativeElement.querySelector('#flexSwitchCheckChecked');
+    return elemento.checked
+  }
+
+  updateCollapse(){
+    this.textoDelBoton = this.textoDelBoton == "Show Text" ? "Hide Text" : "Show Text"
   }
 }
