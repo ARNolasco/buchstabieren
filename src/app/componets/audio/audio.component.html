@@ -1,5 +1,12 @@
 <div class="container">
     <div class="row">
+        Status: {{status}}
+        Track: {{track}}
+        JsonTracks: {{json["tracks"]}}
+    </div>
+</div>
+<div class="container">
+    <div class="row">
         <div class="col-md-8">
             <div class="row">
                 <div class="col-md-12">
@@ -11,7 +18,7 @@
                         Tu navegador no soporta la reproducción de audio.
                     </audio>     
                     <button class="btn btn-secondary prevNextButton" (click)="previewTrack()">prev</button>               
-                    <button (click)="toggleAudio()" #toggleButton id="toggleButton" class="btn btn-primary"><i class="bi bi-test"></i>Play</button>
+                    <button (click)="toggleAudio()" #toggleButton id="toggleButton" class="btn btn-primary"><i class="bi bi-test"></i>{{status == 1 ? "Play" : "Stop"}}</button>
                     <button class="btn btn-secondary prevNextButton" (click)="nextTrack()">next</button> 
                 </div>
                 <div class="col-md-12 text-center">
@@ -43,7 +50,7 @@
                 </div>
                 <div class="col-md-12 collapse" #myText id="collapseExample">
                     <div *ngFor="let item of textsArray" class="d-inline text">
-                        <span (click)="jumpTrack(item['position'], $event)" *ngIf="item.text != 'Space'; else noCumpleCondicion" id="track-{{item.position}}">{{ item["text"] }}</span>
+                        <span *ngIf="item.text != 'Space'; else noCumpleCondicion" id="track-{{item.position}}">{{ item["text"] }}</span>
                         <ng-template #noCumpleCondicion><br><br></ng-template>
                     </div>
                 </div>

@@ -102,6 +102,7 @@ export class AudioComponent {
     this.track++;
     if(this.track > this.json["tracks"])
     {
+      alert("end")
       this.track = this.json["tracks"] + 1;
     }
       
